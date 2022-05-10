@@ -55,14 +55,42 @@ class ProductHandlerTest extends TestCase
         ],
     ];
 
+    /**
+     * ./vendor/bin/phpunit  tests/Service/ProductHandlerTest.php --filter=testGetTotalPrice
+     *  商品總金額
+     */
     public function testGetTotalPrice()
     {
-        $totalPrice = 0;
-        foreach ($this->products as $product) {
-            $price = $product['price'] ?: 0;
-            $totalPrice += $price;
-        }
+        $product = new ProductHandler();
+        $totalPrice = $product->getTotalPrice($this->products);
 
         $this->assertEquals(143, $totalPrice);
+    }
+
+    /**
+     * ./vendor/bin/phpunit  tests/Service/ProductHandlerTest.php --filter=testSearchAndSortByPrice
+     * 搜索以及金額倒序
+     */
+    public function testSearchAndSortByPrice()
+    {
+        $product = new ProductHandler();
+        $type = 'Dessert';
+        $products = $product->searchAndSortByPrice($this->products, $type);
+
+        $this->assertEquals($type, $products[0]['type']);
+
+        $this->assertTrue($products[0]['price'] > $products[1]['price']);
+    }
+
+    /**
+     * ./vendor/bin/phpunit  tests/Service/ProductHandlerTest.php --filter=testCreateTransformUnix
+     *  創建日期轉換為 unix timestamp
+     */
+    public function testCreateTransformUnix()
+    {
+        $product = new ProductHandler();
+        $products = $product->createTransformUnix($this->products);
+
+        $this->assertEquals(strtotime($this->products[0]['create_at']), $products[0]['create_at']);
     }
 }
