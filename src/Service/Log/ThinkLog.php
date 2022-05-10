@@ -30,9 +30,9 @@ class ThinkLog implements LogInterface
     /**
      * 大写
      * @param string $content
-     * @return array
+     * @return string
      */
-    public function logToUpper(string $content = ''): array
+    public function logToUpper(string $content = ''): string
     {
         return $content = strtoupper($content);
     }
