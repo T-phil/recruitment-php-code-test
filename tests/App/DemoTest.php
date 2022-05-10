@@ -11,6 +11,7 @@ namespace Test\App;
 
 use App\App\Demo;
 use App\Util\HttpRequest;
+use Logger;
 use PHPUnit\Framework\TestCase;
 
 
@@ -31,12 +32,10 @@ class DemoTest extends TestCase
      */
     public function testFoo()
     {
-        /*** @var \Mockery\MockInterface|\Mockery\LegacyMockInterface|HttpRequest */
         $httpClient = \Mockery::mock(HttpRequest::class);
         $httpClient->shouldReceive('get')->andReturn(json_encode(['error' => $this->successCode, 'data' => $this->data]));
 
-        /*** @var \Mockery\MockInterface|\Mockery\LegacyMockInterface */
-        $logger = \Mockery::mock(static::class);
+        $logger = \Mockery::mock(Logger::class);
         $logger->shouldReceive("error")->andReturn(null);
 
         $demo = new Demo($logger, $httpClient);
@@ -49,16 +48,10 @@ class DemoTest extends TestCase
      */
     public function testGetUserInfoSuccess()
     {
-        /**
-         * @var \Mockery\MockInterface|\Mockery\LegacyMockInterface|HttpRequest
-         */
         $httpClient = \Mockery::mock(HttpRequest::class);
         $httpClient->shouldReceive('get')->andReturn(json_encode(['error' => $this->successCode, 'data' => $this->data]));
 
-        /**
-         * @var \Mockery\MockInterface|\Mockery\LegacyMockInterface
-         */
-        $logger = \Mockery::mock(static::class);
+        $logger = \Mockery::mock(Logger::class);
         $logger->shouldReceive("error")->andReturn(null);
 
         $demo = new Demo($logger, $httpClient);
@@ -71,16 +64,11 @@ class DemoTest extends TestCase
      */
     public function testGetUserInfoError()
     {
-        /**
-         * @var \Mockery\MockInterface|\Mockery\LegacyMockInterface|HttpRequest
-         */
+
         $httpClient = \Mockery::mock(HttpRequest::class);
         $httpClient->shouldReceive('get')->andReturn(json_encode(['error' => $this->errorCode, 'data' => $this->data]));
 
-        /**
-         * @var \Mockery\MockInterface|\Mockery\LegacyMockInterface
-         */
-        $logger = \Mockery::mock(static::class);
+        $logger = \Mockery::mock(Logger::class);
         $logger->shouldReceive("error")->andReturn(null);
 
         $demo = new Demo($logger, $httpClient);
